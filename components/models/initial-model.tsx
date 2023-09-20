@@ -1,0 +1,142 @@
+"use client"
+import React, { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import * as z from "zod";
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import UploadFile from "@/components/UploadFile";
+import { useModel } from "@/app/hooks/use-model-store";
+
+
+
+const formSchema = z.object({
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
+  imageUrl: z.string().min(1, {
+    message: "Image is required",
+  }),
+});
+
+const InitialModel = () => {
+  const [isMounted , setIsMounted] = useState(false)
+  const router = useRouter()
+  const {isOpen , type} = useModel()
+
+  useEffect(() =>{
+  setIsMounted(true)
+  },[])
+
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      imageUrl: "",
+    },
+  });
+
+  const isLoading = form.formState.isSubmitting;
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+        await axios.post('/api/servers',values)
+    
+        form.reset()
+        router.refresh()
+        window.location.reload()
+      
+    } catch (error) {
+       console.log("[FRONTED_CREATE_SERVER_ERROR]",error)
+    }
+  };
+
+  if(!isMounted){
+    return null
+  }
+
+  const isModelOpen = isOpen && type === 'invite'
+
+  return (
+    <Dialog open={isModelOpen} >
+      <DialogContent className="bg-white text-black p-0 overflow-hidden">
+        <DialogHeader className="pt-8 px-6">
+          <DialogTitle className="text-center font-bold text-2xl">
+            Create a Server
+          </DialogTitle>
+          <DialogDescription className="text-center text-zinc-500">
+            Give your server a name and image personality.You can change it
+            later!.
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="space-y-8 px-8">
+               <div className="items-center justify-center flex text-center">
+                  <FormField
+                   control={form.control}
+                   name="imageUrl"
+                   render={({field})=>(
+                    <FormItem>
+                       <FormControl>
+                         <UploadFile
+                         endPoint="serverImage"
+                         onChange={field.onChange}
+                         value={field.value}
+                         />
+                       </FormControl>
+                    </FormItem>
+                 )}
+                  />
+               </div>
+               <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel
+                  className="text-xs uppercase font-bold text-zinc-500 dark:text-secondary/70"
+                  >Server Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter Server Name" disabled={isLoading} className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            </div>
+            <DialogFooter className="px-6 py-1">
+               <Button variant="primary">
+                  Create
+               </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default InitialModel;
