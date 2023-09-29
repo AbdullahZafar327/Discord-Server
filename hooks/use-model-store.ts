@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import {  serverPropsWithMembers } from '@/types';
 
 
-export type ModelType = "createServer" | "invite" | "editServer" | 'members'
+export type ModelType = "createServer" | "invite" | "editServer" | 'members' | "createChannel"
 
 interface ModelData {
     serializedServer?:serverPropsWithMembers

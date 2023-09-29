@@ -4,6 +4,7 @@ import CreateServerModel from '../models/create-server-model';
 import InviteFriend from '../models/invite-friend-model';
 import EditServerModel from '../models/edit-server';
 import MemberModel from '../models/member-model';
+import CreateChannel from '../models/create-channel';
 
 
 const ModelProvider = () => {
@@ -23,6 +24,7 @@ const ModelProvider = () => {
    <InviteFriend/>
    <EditServerModel/>
    <MemberModel/>
+   <CreateChannel/>
   </>
   )
 }
