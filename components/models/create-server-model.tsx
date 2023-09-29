@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import UploadFile from "@/components/UploadFile";
-import { useModel } from "@/app/hooks/use-model-store";
+import { useModel } from "@/hooks/use-model-store";
 
 
 

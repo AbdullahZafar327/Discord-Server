@@ -28,7 +28,7 @@ const ActionToolTip = ({
       </TooltipTrigger>
       <TooltipContent align={align} side={side}>
         <p className='dark:text-white font-semibold text-sm capitalize'>
-            {label.toLowerCase()}
+            {label?.toLowerCase()}
         </p>
       </TooltipContent>
     </Tooltip>

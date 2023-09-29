@@ -3,8 +3,8 @@ import { initialProfile } from "@/lib/initial-profile";
 import { redirect } from "next/navigation";
 
 import React from "react";
-import InitialModel from "@/components/models/initial-model";
 import ConnectedToDb from "@/Utils/mongoose";
+import InitialModel from "@/components/models/initial-model";
 
 const SetupPage = async () => {
   const profile = await initialProfile();
@@ -37,7 +37,7 @@ const SetupPage = async () => {
      return redirect(`/servers/${server[0]._id}`);
     } 
 
-  return <InitialModel />;
+  return <InitialModel/>;
 };
 
 export default SetupPage;

@@ -18,7 +18,7 @@ export const POST = async (req:Request) =>{
             return new NextResponse("Unauthorized User",{status:401})
         }
 
-
+        
         const member = new Members({
             role: 'ADMIN',
             profileId: profile._id,

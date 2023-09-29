@@ -1,10 +1,10 @@
 "use client"
-import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
+import {useRouter} from 'next/navigation'
 import * as z from "zod";
 import axios from 'axios'
-import { useRouter } from 'next/navigation'
+
 
 import {
   Dialog,
@@ -13,14 +13,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+
 } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import UploadFile from "@/components/UploadFile";
-import { useModel } from "@/app/hooks/use-model-store";
+
 
 
 
@@ -40,15 +39,9 @@ const formSchema = z.object({
     message: "Image is required",
   }),
 });
-
 const InitialModel = () => {
-  const [isMounted , setIsMounted] = useState(false)
-  const router = useRouter()
-  const {isOpen , type} = useModel()
+    const router = useRouter()
 
-  useEffect(() =>{
-  setIsMounted(true)
-  },[])
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -63,24 +56,19 @@ const InitialModel = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
         await axios.post('/api/servers',values)
-    
+        
         form.reset()
-        router.refresh()
-        window.location.reload()
-      
+        router.refresh();
+        window.location.reload();
     } catch (error) {
        console.log("[FRONTED_CREATE_SERVER_ERROR]",error)
     }
   };
 
-  if(!isMounted){
-    return null
-  }
 
-  const isModelOpen = isOpen && type === 'invite'
 
   return (
-    <Dialog open={isModelOpen} >
+    <Dialog open>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-center font-bold text-2xl">
@@ -139,4 +127,4 @@ const InitialModel = () => {
   );
 };
 
-export default InitialModel;
+export default InitialModel

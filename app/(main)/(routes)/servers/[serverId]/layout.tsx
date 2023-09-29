@@ -2,6 +2,7 @@ import { Server } from "@/Models/schema-models";
 import ConnectedToDb from "@/Utils/mongoose";
 import ServerSidebar from "@/components/server/server-sidebar";
 import CurrentProfile from "@/lib/current-profile";
+
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 

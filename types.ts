@@ -1,6 +1,10 @@
-import { IMember, IServer, IUser } from "./Models/schema-models"
+
+import { IServer, IMember, IChannel, IUser } from "./Models/schema-models";
+
 
 export type serverPropsWithMembers = IServer & {
-members:IMember & {
-  profileId: IUser
-}}
+  members: (IMember & { profileId : IUser})[],
+  channels:IChannel[]
+};
+
+

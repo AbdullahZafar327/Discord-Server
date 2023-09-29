@@ -24,7 +24,7 @@ const UserProfileSchema = new Schema<IUser>({
     timestamps: true
 });
 
-const UserProfile  = models['UserProfile'] || model<IUser>('UserProfile', UserProfileSchema);
+const UserProfile  = models?.['UserProfile'] || model<IUser>('UserProfile', UserProfileSchema);
 
 
 
@@ -32,6 +32,7 @@ const UserProfile  = models['UserProfile'] || model<IUser>('UserProfile', UserPr
 
 
 export interface IServer {
+  _id:string,
 name:string,
 imageUrl:string,
 inviteCode:string,
@@ -43,7 +44,7 @@ members:Types.ObjectId[]
 const serverSchema = new Schema<IServer>({
     name: String,
     imageUrl: { type: String, index: true },
-    inviteCode: { type: String, unique: true },
+    inviteCode: { type: String, unique: true , index:true },
 
     profileId: { type: Schema.Types.ObjectId, ref: 'UserProfile', index: true },
     channels:[{type: Schema.Types.ObjectId,ref:'Channels'}],
@@ -53,14 +54,15 @@ const serverSchema = new Schema<IServer>({
     timestamps:true
 });
 
-const Server = models['Server'] || model<IServer>('Server', serverSchema);
+const Server = models?.['Server'] || model<IServer>('Server', serverSchema);
 
 
 
 export interface IMember {
+    _id:string,
     role: Role;
     profileId: Types.ObjectId;
-    servers: Types.ObjectId[];
+    server: Types.ObjectId[];
   }
   
   export enum Role {
@@ -71,13 +73,13 @@ export interface IMember {
   
   const MemberSchema = new Schema<IMember>({
     role: { type: String, default: Role.GUEST, enum: Object.values(Role), index: true },
-    profileId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
-    servers: [{ type: Schema.Types.ObjectId, ref: 'Server' }],
+    profileId: { type: Schema.Types.ObjectId, ref: 'UserProfile', index: true },
+    server: [{ type: Schema.Types.ObjectId, ref: 'Server' }],
   }, {
     timestamps: true,
   });
   
-const Members = models['Members'] ||  model<IMember>("Members",MemberSchema)
+const Members = models?.['Members'] ||  model<IMember>("Members",MemberSchema)
 
 
 
@@ -107,7 +109,7 @@ const ChannelSchema  = new Schema<IChannel>({
 })
 
 
-const Channels = models['Channels']||  model<IChannel>("Channels",ChannelSchema)
+const Channels = models?.['Channels']||  model<IChannel>("Channels",ChannelSchema)
 
 
 

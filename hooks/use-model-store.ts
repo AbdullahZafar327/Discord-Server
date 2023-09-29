@@ -1,12 +1,11 @@
-"use client"
 import { create } from 'zustand'
-import { serverPropsWithMembers } from '@/types';
+import {  serverPropsWithMembers } from '@/types';
 
 
-export type ModelType = "createServer" | "invite" 
+export type ModelType = "createServer" | "invite" | "editServer" | 'members'
 
 interface ModelData {
-   server?:serverPropsWithMembers
+    serializedServer?:serverPropsWithMembers
 }
 
 interface ModelStore {

@@ -1,4 +1,3 @@
-
 import _mongoose, { connect } from "mongoose";
 
 declare global {
@@ -28,19 +27,18 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
+const mongooseOptions = {
+  bufferCommands: false,
+  useUnifiedTopology: true, // Add this option
+};
 
-
-const ConnectedToDb = async () =>{
+const ConnectedToDb = async () => {
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    cached.promise = connect(MONGODB_URI!, opts).then((mongoose) => {
+    cached.promise = connect(MONGODB_URI!, mongooseOptions).then((mongoose) => {
       return mongoose;
     });
   }
@@ -53,6 +51,6 @@ const ConnectedToDb = async () =>{
   }
 
   return cached.conn;
-}
+};
 
 export default ConnectedToDb;
