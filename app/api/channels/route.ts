@@ -1,4 +1,4 @@
-import { Channels, Role, Server } from "@/Models/schema-models"
+import { Channels, Members, Role, Server } from "@/Models/schema-models"
 import ConnectedToDb from "@/Utils/mongoose"
 import CurrentProfile from "@/lib/current-profile"
 import { NextResponse } from "next/server"
@@ -32,23 +32,45 @@ try {
 
     await channel.save()
 
+
+    const member = await Members.aggregate([
+      {
+        $match: {
+            role: { $in: [Role.ADMIN, Role.MODERATOR] }
+        }
+    },
+      {
+        $lookup : {
+          from:'userprofiles',
+          localField:'profileId',
+          foreignField:'_id',
+          as:"matchingProfile"
+        }
+      },{
+        $match: {
+            'matchingProfile._id': profile._id
+        }
+    },{
+      $limit:1
+    }
+    ])
+
+    console.log(member)
+
     const server = await Server.findOneAndUpdate(
         {
           _id: serverId,
-          members: {
-            $elemMatch: {
-              profileId: profile._id,
-              role: {
-                $in: [Role.ADMIN,Role.MODERATOR]
-              }
-            }
-          }
+          profileId: member[0].profileId
         },
         {
-          channels:[channel]
+          $push:{
+            channels: channel
+          }
         },
         { new: true }
       );
+  console.log(server)
+
 
  return new NextResponse(server,{status:200})
 } catch (error) {

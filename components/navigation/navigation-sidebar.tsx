@@ -11,6 +11,7 @@ import { UserButton, redirectToSignIn } from '@clerk/nextjs'
 
 
 
+
 const NavigationSidebar = async () => {
     const profile = await CurrentProfile()
 
@@ -33,6 +34,8 @@ const NavigationSidebar = async () => {
           },
         },
       ]);
+
+  
 
 
 

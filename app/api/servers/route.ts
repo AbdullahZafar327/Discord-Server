@@ -37,10 +37,12 @@ export const POST = async (req:Request) =>{
             name,
             imageUrl,
             inviteCode: uuidv4(),
-            channels: [channel],
-            members: [member]
         })
 
+        server.channels.push(channel);
+        server.members.push(member);
+
+        
         await server.save()
 
         return NextResponse.json(server)

@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import UploadFile from "@/components/UploadFile";
+import { useEffect, useState } from "react";
 
 
 
@@ -41,6 +42,11 @@ const formSchema = z.object({
 });
 const InitialModel = () => {
     const router = useRouter()
+    const [isMounted, setIsMounted] = useState(false)
+
+    useEffect(()=>{
+      setIsMounted(true)
+    },[])
 
 
   const form = useForm({
@@ -64,6 +70,11 @@ const InitialModel = () => {
        console.log("[FRONTED_CREATE_SERVER_ERROR]",error)
     }
   };
+
+
+  if(!isMounted){
+    return null
+  }
 
 
 
